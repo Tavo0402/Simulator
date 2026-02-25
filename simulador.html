@@ -3,6 +3,8 @@
   <head>
     <title>GitHub Copilot Practice Exam</title>
     <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -34,6 +36,9 @@
                 <button onclick="clearSelection()">✕ Clear</button>
                 <button onclick="submitQuiz()" class="primary">
                   ✓ Submit Exam
+                </button>
+                <button onclick="generatePDF()" class="primary">
+                  📄 Generate PDF
                 </button>
               </div>
             </div>
@@ -325,6 +330,73 @@
           statusDiv.innerHTML =
             '<div class="status-badge incorrect-badge">✕ Incorrect</div>';
         }
+      }
+
+      function generatePDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        let yPosition = 20;
+
+        // Agregar título
+        doc.setFontSize(20);
+        doc.setTextColor(108, 92, 231);
+        doc.text("GitHub Copilot Practice Exam", 20, yPosition);
+        yPosition += 15;
+
+        // Separador
+        doc.setDrawColor(200, 200, 200);
+        doc.line(20, yPosition, 190, yPosition);
+        yPosition += 10;
+
+        questions.forEach((q, index) => {
+          const selected = answers[index] || [];
+          const correct = q.correct.map((i) => i.toString());
+          const isCorrect =
+            JSON.stringify(selected.sort()) === JSON.stringify(correct.sort());
+
+          // Verificar si necesita nueva página
+          if (yPosition > 250) {
+            doc.addPage();
+            yPosition = 20;
+          }
+
+          // Texto de la pregunta
+          doc.setFontSize(11);
+          doc.setTextColor(51, 51, 51);
+          const questionLines = doc.splitTextToSize(q.question, 170);
+          doc.text(questionLines, 20, yPosition);
+          yPosition += questionLines.length * 5 + 5;
+
+          // Opciones
+          doc.setFontSize(10);
+          doc.setTextColor(51, 51, 51);
+          doc.setFont(undefined, "normal");
+          q.options.forEach((opt, optIndex) => {
+            if (yPosition > 270) {
+              doc.addPage();
+              yPosition = 20;
+            }
+
+            const isSelected = selected.includes(optIndex.toString());
+            const isCorrectOption = correct.includes(optIndex.toString());
+
+            // Dibujar fondo amarillo si es respuesta correcta
+            if (isCorrectOption) {
+              doc.setFillColor(255, 255, 0);
+              doc.rect(29, yPosition - 3, 132, 5, "F");
+            }
+
+            const optionLines = doc.splitTextToSize(opt, 160);
+            doc.setTextColor(51, 51, 51);
+            doc.text(optionLines, 30, yPosition);
+            yPosition += optionLines.length * 4 + 2;
+          });
+
+          yPosition += 5;
+        });
+
+        // Guardar PDF
+        doc.save("GitHub-Copilot-Exam-Report.pdf");
       }
     </script>
   </body>
