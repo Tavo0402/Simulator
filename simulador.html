@@ -1,0 +1,331 @@
+<!doctype html>
+<html>
+  <head>
+    <title>GitHub Copilot Practice Exam</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>GitHub Copilot Practice Exam</h1>
+      </div>
+
+      <div class="content-wrapper">
+        <button onclick="toggleSidebar()" class="toggle-sidebar">☰</button>
+        <div class="sidebar" id="sidebar"></div>
+
+        <div class="main-content">
+          <div class="panel">
+            <div class="question-header">
+              <div class="question-title" id="questionTitle"></div>
+            </div>
+            <h3 id="questionNumber">Options</h3>
+            <br />
+            <div class="options-container" id="optionsContainer"></div>
+
+            <div class="correct-answers" id="correctAnswers"></div>
+            <div class="explanation" id="explanation"></div>
+
+            <div class="controls">
+              <div class="left-controls">
+                <button onclick="showAnswer()" class="primary">
+                  👁️ Show Answer
+                </button>
+                <button onclick="clearSelection()">✕ Clear</button>
+                <button onclick="submitQuiz()" class="primary">
+                  ✓ Submit Exam
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="answer-status" id="answerStatus"></div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+              "
+            >
+              <div class="question-counter" id="counter"></div>
+              <div style="display: flex; gap: 15px">
+                <button
+                  onclick="previousQuestion()"
+                  class="icon-button"
+                  id="prevBtn"
+                >
+                  ←
+                </button>
+                <button
+                  onclick="nextQuestion()"
+                  class="icon-button"
+                  id="nextBtn"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="result-container" id="resultContainer">
+            <h3 id="resultScore"></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let questions = [];
+      let currentQuestion = 0;
+      let answers = {};
+      let showAnswers = {};
+      let sidebarOpen = true;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("./questions.json")
+          .then((response) => response.json())
+          .then((json) => {
+            questions = json;
+            buildSidebar();
+            displayQuestion();
+          });
+      });
+
+      function buildSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.innerHTML = "";
+
+        questions.forEach((q, index) => {
+          const div = document.createElement("div");
+          div.classList.add("question-item");
+          if (index === currentQuestion) {
+            div.classList.add("active");
+          }
+          div.textContent = `Q${index + 1}`;
+          div.onclick = () => goToQuestion(index);
+          sidebar.appendChild(div);
+        });
+      }
+
+      function displayQuestion() {
+        const q = questions[currentQuestion];
+
+        // Update title
+        document.getElementById("questionTitle").textContent = q.question;
+
+        // Clear status
+        document.getElementById("answerStatus").innerHTML = "";
+
+        // Update options
+        const optionsContainer = document.getElementById("optionsContainer");
+        optionsContainer.innerHTML = "";
+
+        q.options.forEach((opt, i) => {
+          const label = document.createElement("label");
+          label.classList.add("option");
+
+          const isSelected = answers[currentQuestion]?.includes(i.toString());
+          if (isSelected) {
+            label.classList.add("selected");
+          }
+
+          const input = document.createElement("input");
+          input.type = "checkbox";
+          input.name = `q${currentQuestion}`;
+          input.value = i;
+          input.checked = isSelected;
+          input.onchange = (e) => {
+            if (!answers[currentQuestion]) {
+              answers[currentQuestion] = [];
+            }
+            if (e.target.checked) {
+              answers[currentQuestion].push(i.toString());
+            } else {
+              answers[currentQuestion] = answers[currentQuestion].filter(
+                (x) => x !== i.toString(),
+              );
+            }
+            updateSidebar();
+            updateOptionUI();
+            validateCurrentAnswer();
+          };
+
+          const optText = document.createElement("span");
+          optText.textContent = opt;
+
+          label.appendChild(input);
+          label.appendChild(optText);
+          optionsContainer.appendChild(label);
+        });
+
+        // Update explanation
+        updateExplanation();
+
+        // Update counter
+        document.getElementById("counter").textContent =
+          `Question ${currentQuestion + 1} of ${questions.length}`;
+
+        // Update buttons
+        document.getElementById("prevBtn").disabled = currentQuestion === 0;
+        document.getElementById("nextBtn").disabled =
+          currentQuestion === questions.length - 1;
+
+        // Update sidebar
+        buildSidebar();
+      }
+
+      function updateOptionUI() {
+        const q = questions[currentQuestion];
+        const options = document.querySelectorAll(".option");
+        const isShowingAnswers = showAnswers[currentQuestion];
+
+        options.forEach((opt, i) => {
+          const isSelected = answers[currentQuestion]?.includes(i.toString());
+          const isCorrect = q.correct.includes(i);
+
+          opt.classList.remove("selected", "correct", "incorrect");
+
+          if (isShowingAnswers) {
+            if (isCorrect) {
+              opt.classList.add("correct");
+            } else if (isSelected && !isCorrect) {
+              opt.classList.add("incorrect");
+            }
+          } else if (isSelected) {
+            opt.classList.add("selected");
+          }
+        });
+      }
+
+      function updateExplanation() {
+        const explanationDiv = document.getElementById("explanation");
+        const correctAnswersDiv = document.getElementById("correctAnswers");
+        const q = questions[currentQuestion];
+        if (showAnswers[currentQuestion]) {
+          correctAnswersDiv.textContent =
+            "Correct Answer(s): " +
+            q.correct.map((i) => q.options[i]).join(", ");
+          explanationDiv.textContent = questions[currentQuestion].explanation;
+          explanationDiv.classList.add("show");
+        } else {
+          explanationDiv.classList.remove("show");
+        }
+      }
+
+      function updateSidebar() {
+        const items = document.querySelectorAll(".question-item");
+        items.forEach((item, index) => {
+          if (index === currentQuestion) {
+            item.classList.add("active");
+          } else {
+            item.classList.remove("active");
+          }
+        });
+      }
+
+      function goToQuestion(index) {
+        currentQuestion = index;
+        displayQuestion();
+      }
+
+      function previousQuestion() {
+        if (currentQuestion > 0) {
+          currentQuestion--;
+          displayQuestion();
+        }
+      }
+
+      function nextQuestion() {
+        if (currentQuestion < questions.length - 1) {
+          currentQuestion++;
+          displayQuestion();
+        }
+      }
+
+      function saveQuestion() {
+        alert("Question saved! (Feature not fully implemented)");
+      }
+
+      function showAnswer() {
+        showAnswers[currentQuestion] = !showAnswers[currentQuestion];
+        updateExplanation();
+        updateOptionUI();
+      }
+
+      function clearSelection() {
+        answers[currentQuestion] = [];
+        showAnswers[currentQuestion] = false;
+        document
+          .querySelectorAll(`input[name="q${currentQuestion}"]`)
+          .forEach((input) => {
+            input.checked = false;
+          });
+        document.getElementById("correctAnswers").textContent = "";
+        document.getElementById("explanation").classList.remove("show");
+        document.getElementById("answerStatus").innerHTML = "";
+        updateOptionUI();
+      }
+
+      function submitQuiz() {
+        let score = 0;
+
+        questions.forEach((q, index) => {
+          const selected = answers[index] || [];
+          const correct = q.correct.map((i) => i.toString());
+
+          if (
+            JSON.stringify(selected.sort()) === JSON.stringify(correct.sort())
+          ) {
+            score++;
+          }
+        });
+
+        const resultContainer = document.getElementById("resultContainer");
+        const resultScore = document.getElementById("resultScore");
+        resultScore.textContent = `Your Score: ${score} / ${questions.length}`;
+        resultContainer.classList.add("show");
+
+        // Scroll to result
+        resultContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+
+      function toggleSidebar() {
+        sidebarOpen = !sidebarOpen;
+        const sidebar = document.getElementById("sidebar");
+        const contentWrapper = document.querySelector(".content-wrapper");
+
+        if (sidebarOpen) {
+          sidebar.classList.remove("collapsed");
+          contentWrapper.classList.remove("sidebar-collapsed");
+        } else {
+          sidebar.classList.add("collapsed");
+          contentWrapper.classList.add("sidebar-collapsed");
+        }
+      }
+
+      function validateCurrentAnswer() {
+        const q = questions[currentQuestion];
+        const selected = answers[currentQuestion] || [];
+        const correct = q.correct.map((i) => i.toString());
+        const statusDiv = document.getElementById("answerStatus");
+
+        if (selected.length === 0) {
+          statusDiv.innerHTML = "";
+          return;
+        }
+
+        const isCorrect =
+          JSON.stringify(selected.sort()) === JSON.stringify(correct.sort());
+
+        if (isCorrect) {
+          statusDiv.innerHTML =
+            '<div class="status-badge correct-badge">✓ Correct</div>';
+        } else {
+          statusDiv.innerHTML =
+            '<div class="status-badge incorrect-badge">✕ Incorrect</div>';
+        }
+      }
+    </script>
+  </body>
+</html>
