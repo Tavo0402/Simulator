@@ -300,6 +300,50 @@ button.primary:hover {
   border-color: #5f3dc4;
 }
 
+button.btn-show-answer {
+  background-color: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+button.btn-show-answer:hover {
+  background-color: #059669;
+  border-color: #059669;
+}
+
+button.btn-clear {
+  background-color: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+button.btn-clear:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+}
+
+button.btn-submit {
+  background-color: #8b5cf6;
+  color: white;
+  border-color: #8b5cf6;
+}
+
+button.btn-submit:hover {
+  background-color: #7c3aed;
+  border-color: #7c3aed;
+}
+
+button.btn-pdf {
+  background-color: #f59e0b;
+  color: white;
+  border-color: #f59e0b;
+}
+
+button.btn-pdf:hover {
+  background-color: #d97706;
+  border-color: #d97706;
+}
+
 button.icon-button {
   width: 40px;
   height: 40px;

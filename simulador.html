@@ -30,14 +30,16 @@
 
             <div class="controls">
               <div class="left-controls">
-                <button onclick="showAnswer()" class="primary">
+                <button onclick="showAnswer()" class="btn-show-answer">
                   👁️ Show Answer
                 </button>
-                <button onclick="clearSelection()">✕ Clear</button>
-                <button onclick="submitQuiz()" class="primary">
+                <button onclick="clearSelection()" class="btn-clear">
+                  ✕ Clear
+                </button>
+                <button onclick="submitQuiz()" class="btn-submit">
                   ✓ Submit Exam
                 </button>
-                <button onclick="generatePDF()" class="primary">
+                <button onclick="generatePDF()" class="btn-pdf">
                   📄 Generate PDF
                 </button>
               </div>
@@ -164,19 +166,15 @@
           optionsContainer.appendChild(label);
         });
 
-        // Update explanation
         updateExplanation();
 
-        // Update counter
         document.getElementById("counter").textContent =
           `Question ${currentQuestion + 1} of ${questions.length}`;
 
-        // Update buttons
         document.getElementById("prevBtn").disabled = currentQuestion === 0;
         document.getElementById("nextBtn").disabled =
           currentQuestion === questions.length - 1;
 
-        // Update sidebar
         buildSidebar();
       }
 
@@ -291,7 +289,6 @@
         resultScore.textContent = `Your Score: ${score} / ${questions.length}`;
         resultContainer.classList.add("show");
 
-        // Scroll to result
         resultContainer.scrollIntoView({ behavior: "smooth", block: "center" });
       }
 
@@ -337,13 +334,11 @@
         const doc = new jsPDF();
         let yPosition = 20;
 
-        // Agregar título
         doc.setFontSize(20);
         doc.setTextColor(108, 92, 231);
         doc.text("GitHub Copilot Practice Exam", 20, yPosition);
         yPosition += 15;
 
-        // Separador
         doc.setDrawColor(200, 200, 200);
         doc.line(20, yPosition, 190, yPosition);
         yPosition += 10;
@@ -354,20 +349,17 @@
           const isCorrect =
             JSON.stringify(selected.sort()) === JSON.stringify(correct.sort());
 
-          // Verificar si necesita nueva página
           if (yPosition > 250) {
             doc.addPage();
             yPosition = 20;
           }
 
-          // Texto de la pregunta
           doc.setFontSize(11);
           doc.setTextColor(51, 51, 51);
           const questionLines = doc.splitTextToSize(q.question, 170);
           doc.text(questionLines, 20, yPosition);
           yPosition += questionLines.length * 5 + 5;
 
-          // Opciones
           doc.setFontSize(10);
           doc.setTextColor(51, 51, 51);
           doc.setFont(undefined, "normal");
@@ -380,7 +372,6 @@
             const isSelected = selected.includes(optIndex.toString());
             const isCorrectOption = correct.includes(optIndex.toString());
 
-            // Dibujar fondo amarillo si es respuesta correcta
             if (isCorrectOption) {
               doc.setFillColor(255, 255, 0);
               doc.rect(29, yPosition - 3, 132, 5, "F");
@@ -395,7 +386,6 @@
           yPosition += 5;
         });
 
-        // Guardar PDF
         doc.save("GitHub-Copilot-Exam-Report.pdf");
       }
     </script>
