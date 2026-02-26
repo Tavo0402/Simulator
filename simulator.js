@@ -37,6 +37,7 @@ function buildSidebar() {
       div.classList.add("active");
     }
     div.textContent = `Q${index + 1}`;
+    div.title = q.question;
     div.onclick = () => goToQuestion(index);
     sidebar.appendChild(div);
   });
