@@ -15,6 +15,15 @@ document.addEventListener("DOMContentLoaded", function () {
       buildSidebar();
       displayQuestion();
     });
+
+  // Event listener para teclas de flecha
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "ArrowLeft") {
+      previousQuestion();
+    } else if (event.key === "ArrowRight") {
+      nextQuestion();
+    }
+  });
 });
 
 function buildSidebar() {
