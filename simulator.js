@@ -135,6 +135,8 @@ function updateExplanation() {
     explanationDiv.textContent = questions[currentQuestion].explanation;
     explanationDiv.classList.add("show");
   } else {
+    correctAnswersDiv.textContent = "";
+    explanationDiv.textContent = "";
     explanationDiv.classList.remove("show");
   }
 }

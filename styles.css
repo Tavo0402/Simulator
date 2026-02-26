@@ -273,7 +273,6 @@ body {
 .controls {
   display: flex;
   gap: 12px;
-  margin-top: 30px;
   justify-content: end;
   align-items: center;
 }
