@@ -92,8 +92,8 @@ function displayQuestion() {
 
   updateExplanation();
 
-  document.getElementById("counter").textContent =
-    `Question ${currentQuestion + 1} of ${questions.length}`;
+  document.getElementById("counter").innerHTML =
+    `<strong>Question <span class="question-number-highlight">${currentQuestion + 1}</span> of <span class="question-number-highlight">${questions.length}</span></strong>`;
 
   document.getElementById("prevBtn").disabled = currentQuestion === 0;
   document.getElementById("nextBtn").disabled =

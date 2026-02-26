@@ -391,9 +391,16 @@ button:disabled {
 }
 
 .question-counter {
-  font-size: 14px;
-  color: #999;
+  font-size: 16px;
+  color: #666;
   white-space: nowrap;
+  font-weight: 600;
+}
+
+.question-number-highlight {
+  font-size: 18px;
+  color: black;
+  font-weight: 700;
 }
 
 .result-container {
