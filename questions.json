@@ -53,7 +53,7 @@
         "C. Provide insight on where to get the content from to get a response",
         "D. Provide links to supporting documentation"
       ],
-      "correct": [0, 3],
+      "correct": [0, 2],
       "explanation": "Improving prompts involves providing specific success criteria and including links to supporting documentation."
     },
     {
@@ -108,7 +108,7 @@
         "C. Type out the code snippet -> Use copilot refine -> Review the suggestion",
         "D. Describe the project's architecture -> Use copilot generate -> Accept the suggestion"
       ],
-      "correct": [0],
+      "correct": [1],
       "explanation": "In the CLI, Copilot generates suggestions by analyzing code comments."
     },
     {
@@ -833,6 +833,62 @@
       ],
       "correct": [1],
       "explanation": "You can reduce Copilot's relevance by creating a .copilot-ignore file to exclude files or directories."
+    },
+    {
+      "question": "QUESTION 76: What are the effects of content exclusions?",
+      "options": [
+        "A. Not available as context",
+        "B. Suggestions not available in excluded files",
+        "C. Not used while debugging",
+        "D. IDE will not count suggestions"
+      ],
+      "correct": [0, 1],
+      "explanation": "Content exclusions prevent Copilot from using excluded files as context or providing suggestions based on them."
+    },
+    {
+      "question": "QUESTION 77: What kind of insights can the GitHub Copilot usage metrics API provide to help evaluate the effectiveness of GitHub Copilot? (Choose two.)",
+      "options": [
+        "A. The API can generate detailed reports on code quality improvements made by GitHub Copilot.",
+        "B. The API can track the number of code suggestions accepted and used in the organization.",
+        "C. The API can refactor your code to improve productivity.",
+        "D. The API can provide feedback on coding style and standards compliance.",
+        "E. The API can provide Copilot Chat specific suggestions acceptance metrics."
+      ],
+      "correct": [1, 4],
+      "explanation": "The usage metrics API helps evaluate Copilot effectiveness by tracking accepted suggestions across the organization and providing Copilot Chat-specific acceptance metrics."
+    },
+    {
+      "question": "QUESTION 78: Which of the following GitHub Copilot Business related activities can be tracked using the organization audit logs?",
+      "options": [
+        "A. Accepted chat suggestions",
+        "B. Code suggestions made by GitHub Copilot",
+        "C. Changes to content exclusion settings",
+        "D. Suggestions blocked by duplication detection filtering"
+      ],
+      "correct": [2],
+      "explanation": "Organization audit logs can track changes to content exclusion settings, helping administrators monitor and manage Copilot Business configurations."
+    },
+    {
+      "question": "QUESTION 79: What configuration needs to be set to get help from Microsoft and GitHub protecting against IP infringement while using GitHub Copilot?",
+      "options": [
+        "A. Suggestions matching public code to ‘blocked’",
+        "B. Enforce blocking of MIT or GPL licensed code",
+        "C. You need to check code suggestions yourself before accepting",
+        "D. Enabled GitHub Copilot license checking"
+      ],
+      "correct": [0],
+      "explanation": "To protect against IP infringement, you need to configure GitHub Copilot to block suggestions that match public code."
+    },
+    {
+      "question": "QUESTION 80: Which GitHub Copilot plan allows for prompt and suggestion collection?",
+      "options": [
+        "A. GitHub Copilot Individuals",
+        "B. GitHub Copilot Business",
+        "C. GitHub Copilot Enterprise",
+        "D. GitHub Copilot Codespace"
+      ],
+      "correct": [0],
+      "explanation": "Prompt and suggestion collection is available with the GitHub Copilot Individuals plan."
     }
   ]
 }
