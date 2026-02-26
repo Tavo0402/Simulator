@@ -197,6 +197,7 @@ function clearSelection() {
       input.checked = false;
     });
   document.getElementById("correctAnswers").textContent = "";
+  document.getElementById("resultContainer").classList.remove("show");
   document.getElementById("explanation").classList.remove("show");
   document.getElementById("answerStatus").innerHTML = "";
   updateOptionUI();
