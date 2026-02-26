@@ -221,6 +221,15 @@ function submitQuiz() {
   displayQuestion();
 }
 
+function restartQuiz() {
+  answers = {};
+  showAnswers = {};
+  currentQuestion = 0;
+  const resultContainer = document.getElementById("resultContainer");
+  resultContainer.classList.remove("show");
+  displayQuestion();
+}
+
 function toggleSidebar() {
   sidebarOpen = !sidebarOpen;
   const sidebar = document.getElementById("sidebar");
