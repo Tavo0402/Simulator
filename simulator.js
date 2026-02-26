@@ -3,7 +3,7 @@ let examTitle = "";
 let currentQuestion = 0;
 let answers = {};
 let showAnswers = {};
-let sidebarOpen = true;
+let sidebarOpen = false;
 
 document.addEventListener("DOMContentLoaded", function () {
   fetch("./questions.json")
@@ -224,14 +224,11 @@ function submitQuiz() {
 function toggleSidebar() {
   sidebarOpen = !sidebarOpen;
   const sidebar = document.getElementById("sidebar");
-  const contentWrapper = document.querySelector(".content-wrapper");
 
   if (sidebarOpen) {
     sidebar.classList.remove("collapsed");
-    contentWrapper.classList.remove("sidebar-collapsed");
   } else {
     sidebar.classList.add("collapsed");
-    contentWrapper.classList.add("sidebar-collapsed");
   }
 }
 
