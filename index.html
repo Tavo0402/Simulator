@@ -28,6 +28,19 @@
           <div class="panel">
             <div class="question-header">
               <div class="question-title" id="questionTitle"></div>
+              <div class="filter-controls">
+                <label class="checkbox-label">
+                  <input
+                    type="checkbox"
+                    id="randomizeCheckbox"
+                    onchange="handleRandomize()"
+                  />
+                  <span>Randomize questions</span>
+                </label>
+                <select id="questionFilter" onchange="handleQuestionFilter()">
+                  <option value="">All questions</option>
+                </select>
+              </div>
             </div>
             <h3 id="questionNumber">Options</h3>
             <br />

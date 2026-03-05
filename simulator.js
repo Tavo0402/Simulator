@@ -1,22 +1,26 @@
 let questions = [];
+let allQuestions = [];
 let examTitle = "";
 let currentQuestion = 0;
 let answers = {};
 let showAnswers = {};
 let sidebarOpen = false;
+let isRandomized = false;
+let selectedQuestionCount = null;
 
 document.addEventListener("DOMContentLoaded", function () {
   fetch("./questions.json")
     .then((response) => response.json())
     .then((json) => {
       examTitle = json.title;
+      allQuestions = JSON.parse(JSON.stringify(json.questions));
       questions = json.questions;
       document.querySelector(".header h1").textContent = examTitle;
+      populateQuestionFilter();
       buildSidebar();
       displayQuestion();
     });
 
-  // Event listener para teclas de flecha
   document.addEventListener("keydown", function (event) {
     if (event.key === "ArrowLeft") {
       previousQuestion();
@@ -25,6 +29,89 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+function populateQuestionFilter() {
+  const totalQuestions = allQuestions.length;
+  const filterSelect = document.getElementById("questionFilter");
+
+  if (totalQuestions <= 1) return;
+
+  const divisor = Math.floor(totalQuestions / 4);
+  const optionsToAdd = new Set();
+
+  for (let i = 1; i <= 4; i++) {
+    const value = divisor * i;
+    if (value > 0 && value < totalQuestions) {
+      optionsToAdd.add(value);
+    }
+  }
+
+  Array.from(optionsToAdd)
+    .sort((a, b) => a - b)
+    .forEach((value) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = `${value} questions`;
+      filterSelect.appendChild(option);
+    });
+}
+
+function handleRandomize() {
+  const checkbox = document.getElementById("randomizeCheckbox");
+  isRandomized = checkbox.checked;
+
+  const filterSelect = document.getElementById("questionFilter");
+  const selectedValue = filterSelect.value;
+
+  if (selectedValue) {
+    selectedQuestionCount = parseInt(selectedValue);
+    questions = allQuestions.slice(0, selectedQuestionCount);
+  } else {
+    questions = JSON.parse(JSON.stringify(allQuestions));
+  }
+
+  if (isRandomized) {
+    shuffleQuestions();
+  }
+
+  resetQuiz();
+}
+
+function shuffleQuestions() {
+  for (let i = questions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [questions[i], questions[j]] = [questions[j], questions[i]];
+  }
+}
+
+function handleQuestionFilter() {
+  const filterSelect = document.getElementById("questionFilter");
+  const selectedValue = filterSelect.value;
+
+  selectedQuestionCount = selectedValue ? parseInt(selectedValue) : null;
+
+  if (selectedQuestionCount) {
+    questions = allQuestions.slice(0, selectedQuestionCount);
+  } else {
+    questions = JSON.parse(JSON.stringify(allQuestions));
+  }
+
+  if (isRandomized) {
+    shuffleQuestions();
+  }
+
+  resetQuiz();
+}
+
+function resetQuiz() {
+  currentQuestion = 0;
+  answers = {};
+  showAnswers = {};
+  const resultContainer = document.getElementById("resultContainer");
+  resultContainer.classList.remove("show");
+  buildSidebar();
+  displayQuestion();
+}
 
 function buildSidebar() {
   const sidebar = document.getElementById("sidebar");

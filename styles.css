@@ -153,7 +153,6 @@ body {
   font-size: 18px;
   font-weight: 600;
   color: #2c3e50;
-  margin-bottom: 20px;
   line-height: 1.6;
   background-color: #e8e0f7;
   padding: 16px 20px;
@@ -164,6 +163,7 @@ body {
   display: flex;
   gap: 15px;
   align-items: flex-start;
+  justify-content: space-between;
   margin-bottom: 30px;
 }
 
@@ -296,9 +296,61 @@ body {
 
 .controls {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 16px;
   justify-content: end;
+  align-items: flex-end;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 12px;
   align-items: center;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #6c5ce7;
+}
+
+#questionFilter {
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#questionFilter:hover {
+  border-color: #6c5ce7;
+}
+
+#questionFilter:focus {
+  outline: none;
+  border-color: #6c5ce7;
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
 }
 
 .left-controls {
