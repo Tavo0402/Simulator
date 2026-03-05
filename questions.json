@@ -889,6 +889,50 @@
       ],
       "correct": [0],
       "explanation": "Prompt and suggestion collection is available with the GitHub Copilot Individuals plan."
+    },
+    {
+      "question": "QUESTION 81: How does GitHub Copilot Enterprise assist in code reviews during the pull request process? (Select two.)",
+      "options": [
+        "A. It generates a prose summary and a bulleted list of key changes for pull requests.",
+        "B. It automatically merges pull requests after an automated review.",
+        "C. It can answer questions about the changeset of the pull request.",
+        "D. It can validate the accuracy of the changes in the pull request."
+      ],
+      "correct": [0, 2],
+      "explanation": "GitHub Copilot Enterprise helps reviewers by generating summaries of pull requests and by answering questions about the changeset, making the review process more efficient."
+    },
+    {
+      "question": "QUESTION 82: What configuration needs to be set to get help from Microsoft and GitHub protecting against IP infringement while using GitHub Copilot?",
+      "options": [
+        "A. Suggestions matching public code to 'blocked'",
+        "B. Enable GitHub Copilot license checking",
+        "C. Enforce blocking of MIT or GPL licensed code",
+        "D. You need to check code suggestions yourself before accepting"
+      ],
+      "correct": [0],
+      "explanation": "To receive help from Microsoft and GitHub in protecting against IP infringement, you need to configure GitHub Copilot to block suggestions that match public code."
+    },
+    {
+      "question": "QUESTION 83: How does GitHub Copilot Chat help in understanding the existing codebase?",
+      "options": [
+        "A. By providing visual diagrams of the code structure.",
+        "B. By running code linters and formatters.",
+        "C. By answering questions about the code and generating explanations.",
+        "D. By automatically refactoring code to improve readability."
+      ],
+      "correct": [2],
+      "explanation": "GitHub Copilot Chat helps in understanding the existing codebase by answering questions about the code and generating explanations."
+    },
+    {
+      "question": "QUESTION 84: Which of the following statements best describes the impact of GitHub Copilot on the software development process?",
+      "options": [
+        "A. It decreases software vulnerabilities from third party dependencies.",
+        "B. It increases productivity by automating repetitive coding tasks.",
+        "C. It replaces the need for developers in the software development process.",
+        "D. It reduces overhead by automating testing workflows."
+      ],
+      "correct": [1],
+      "explanation": "GitHub Copilot increases productivity by automating repetitive coding tasks, allowing developers to focus on more complex and creative aspects of software development."
     }
   ]
 }
